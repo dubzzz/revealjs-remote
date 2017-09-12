@@ -10,6 +10,9 @@ app
 .get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 })
+.get('/hammer.min.js', function(req, res) {
+	res.sendFile(__dirname + '/hammer.min.js');
+})
 .get('/remote.js', function(req, res) {
 	res.sendFile(__dirname + '/remote.js');
 })
