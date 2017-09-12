@@ -37,16 +37,16 @@ function play_pointer(data) {
 function play_arrow(arrow) {
     switch (arrow) {
         case "left":
-            Reveal.left();
-            break;
-        case "right":
             Reveal.right();
             break;
+        case "right":
+            Reveal.left();
+            break;
         case "up":
-            Reveal.up();
+            Reveal.down();
             break;
         case "down":
-            Reveal.down();
+            Reveal.up();
             break;
     }
 }
@@ -60,7 +60,7 @@ socket.on('command', function(raw) {
             play_pointer(command.data);
             break;
         case "arrow":
-            play_arrow(command.data);
+            play_arrow(command.data.direction);
             break;
     }
 });

@@ -1,5 +1,6 @@
 var socket = io.connect(window.location.protocol + '//' + window.location.host);
 var mc = new Hammer(document.body);
+mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
 function send_command(type, data) {
     socket.emit('command', JSON.stringify({type: type, data: data}));
