@@ -10,6 +10,6 @@
 	"description": "Simple remote control for RevealJS presentations",
 	"scripts":
 	{
-		"start": "./app.js"
+		"start": "node app.js"
 	}
 }
