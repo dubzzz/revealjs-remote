@@ -6,7 +6,7 @@ function send_command(type, data) {
     socket.emit('command', JSON.stringify({type: type, data: data}));
 }
 
-mc.on('press', function(e) {
+mc.on('tap press', function(e) {
     var x = 100.0 * e.center.x / document.body.offsetWidth;
     var y = 100.0 * e.center.y / document.body.offsetHeight;
     send_command("pointer", {x: x, y: y});
