@@ -16,6 +16,9 @@ app
 .get('/remote.js', function(req, res) {
 	res.sendFile(__dirname + '/remote.js');
 })
+.get('/remote.css', function(req, res) {
+	res.sendFile(__dirname + '/remote.css');
+})
 .get('/listener.js', function(req, res) {
 	res.sendFile(__dirname + '/listener.js');
 });

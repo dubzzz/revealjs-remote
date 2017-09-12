@@ -51,6 +51,17 @@ function play_arrow(arrow) {
     }
 }
 
+function play_goto(target) {
+    switch (target) {
+        case "prev":
+            Reveal.prev();
+            break;
+        case "next":
+            Reveal.next();
+            break;
+    }
+}
+
 var socket = io.connect("http://localhost:8080/");
 socket.on('command', function(raw) {
     console.log("Received command " + raw);
@@ -61,6 +72,9 @@ socket.on('command', function(raw) {
             break;
         case "arrow":
             play_arrow(command.data.direction);
+            break;
+        case "goto":
+            play_goto(command.data.target);
             break;
     }
 });

@@ -6,7 +6,7 @@ function send_command(type, data) {
     socket.emit('command', JSON.stringify({type: type, data: data}));
 }
 
-mc.on('tap press', function(e) {
+mc.on('press', function(e) {
     var x = 100.0 * e.center.x / document.body.offsetWidth;
     var y = 100.0 * e.center.y / document.body.offsetHeight;
     send_command("pointer", {x: x, y: y});
@@ -22,4 +22,13 @@ mc.on('swipeup', function() {
 });
 mc.on('swipedown', function() {
     send_command("arrow", {direction: "down"});
+});
+
+document.getElementById("button_prev").addEventListener("click", function(e) {
+    send_command("goto", {target: "prev"});
+    e.preventDefault();
+});
+document.getElementById("button_next").addEventListener("click", function(e) {
+    send_command("goto", {target: "next"});
+    e.preventDefault();
 });

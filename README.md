@@ -35,5 +35,5 @@ Open your presentation as before, it will log onto the app to get the controls s
 ## Available features
 
 - arrows: swiping left, right, up or down will emulate arrows on presentation side
-- lazer pointer: click on the screen
+- lazer pointer: long click on the screen
 
