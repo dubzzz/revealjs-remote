@@ -1,4 +1,6 @@
 var socket = io.connect(window.location.protocol + '//' + window.location.host);
+socket.emit('register', 'remote');
+
 var mc = new Hammer(document.body);
 mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
 
@@ -31,4 +33,9 @@ document.getElementById("button_prev").addEventListener("click", function(e) {
 document.getElementById("button_next").addEventListener("click", function(e) {
     send_command("goto", {target: "next"});
     e.preventDefault();
+});
+
+socket.on('screenshot', function(data) {
+    document.body.style.backgroundImage = "url('" + data + "')";
+    document.body.style.backgroundSize = "100% 100%";
 });

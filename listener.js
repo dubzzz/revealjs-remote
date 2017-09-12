@@ -78,3 +78,25 @@ socket.on('command', function(raw) {
             break;
     }
 });
+
+var lastScreenshot = "";
+function send_screenshot() {
+    html2canvas(document.body, {
+        onrendered: function(canvas) {
+            // hide the lower part (moving part)
+            var ctx = canvas.getContext("2d");
+            ctx.fillRect(0, document.body.offsetHeight -20,document.body.offsetWidth, 20);
+
+            var screenshot = canvas.toDataURL("image/png");
+            if (screenshot != lastScreenshot) {
+                lastScreenshot = screenshot;
+                socket.emit('screenshot', screenshot);
+            }
+            setTimeout(send_screenshot, 500);
+        },
+        width: document.body.offsetWidth,
+        height: document.body.offsetHeight
+    });
+}
+send_screenshot();
+
