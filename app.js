@@ -32,7 +32,8 @@ var registered_sockets = {};
 io.sockets.on('connection', function(socket) {
     console.log("Register socket #" + socket.id);
 	registered_sockets[socket.id] = {
-		'display-screenshots': false
+		'display-screenshots': false,
+		'presenter': false,
 	};
 	
 	// Unregister the socket
@@ -43,13 +44,18 @@ io.sockets.on('connection', function(socket) {
 
 	// Register
 	socket.on('register', function(type) {
-		if (type == "display-screenshots") {
-			console.log("Register '" + type + "' on socket #" + socket.id);
-			registered_sockets[socket.id]['display-screenshots'] = true;
-			io.sockets.to(socket.id).emit('screenshot', last_screenshot);
-		}
-		else {
-			console.log("Unknown registration type for socket #" + socket.id);
+		switch (type) {
+			case "display-screenshots":
+				console.log("Register '" + type + "' on socket #" + socket.id);
+				registered_sockets[socket.id]['display-screenshots'] = true;
+				io.sockets.to(socket.id).emit('screenshot', last_screenshot);
+				break;
+			case "presenter":
+				console.log("Register '" + type + "' on socket #" + socket.id);
+				registered_sockets[socket.id]['presenter'] = true;
+			default:
+				console.log("Unknown registration type for socket #" + socket.id);
+				break;			
 		}
 	});
 	
@@ -57,6 +63,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('command', function(command) {
 		console.log("Broadcast command " + command);
 		Object.keys(registered_sockets)
+			.filter(id => registered_sockets[id]['presenter'])
 			.forEach(id => io.sockets.to(id).emit('command', command));
 	});
 	
