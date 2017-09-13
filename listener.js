@@ -81,7 +81,8 @@ socket.on('command', function(raw) {
 
 var lastScreenshot = "";
 function send_screenshot() {
-    html2canvas(document.body, {
+    document.getElementsByClassName('reveal')[0].style.backgroundColor = window.getComputedStyle(document.body, null).getPropertyValue('background-color');
+    html2canvas(document.getElementsByClassName('reveal')[0], {
         onrendered: function(canvas) {
             // hide the lower part (moving part)
             var ctx = canvas.getContext("2d");
