@@ -11,19 +11,19 @@ app
 	res.sendFile(__dirname + '/index.html');
 })
 .get('/hammer.min.js', function(req, res) {
-	res.sendFile(__dirname + '/hammer.min.js');
+	res.sendFile(__dirname + '/static/remote/hammer.min.js');
 })
 .get('/html2canvas.min.js', function(req, res) {
-	res.sendFile(__dirname + '/html2canvas.min.js');
+	res.sendFile(__dirname + '/static/presenter/html2canvas.min.js');
 })
 .get('/remote.js', function(req, res) {
-	res.sendFile(__dirname + '/remote.js');
+	res.sendFile(__dirname + '/static/remote/remote.js');
 })
 .get('/remote.css', function(req, res) {
-	res.sendFile(__dirname + '/remote.css');
+	res.sendFile(__dirname + '/static/remote/remote.css');
 })
 .get('/listener.js', function(req, res) {
-	res.sendFile(__dirname + '/listener.js');
+	res.sendFile(__dirname + '/static/presenter/listener.js');
 });
 
 var current_presenter = null;
