@@ -28,24 +28,24 @@ app
 
 var last_screenshot = null;
 var registered_sockets = {};
-var registered_remotes = {};
 
 io.sockets.on('connection', function(socket) {
     console.log("Register socket #" + socket.id);
-	registered_sockets[socket.id] = true;
+	registered_sockets[socket.id] = {
+		'display-screenshots': false
+	};
 	
 	// Unregister the socket
 	socket.on('disconnect', function () {
         console.log("Unregister socket #" + socket.id);
 		delete registered_sockets[socket.id];
-		delete registered_remotes[socket.id];
 	});
 
 	// Register
 	socket.on('register', function(type) {
-		if (type == "remote") {
-			console.log("Register remote on socket #" + socket.id);
-			registered_remotes[socket.id] = true;
+		if (type == "display-screenshots") {
+			console.log("Register '" + type + "' on socket #" + socket.id);
+			registered_sockets[socket.id]['display-screenshots'] = true;
 			io.sockets.to(socket.id).emit('screenshot', last_screenshot);
 		}
 		else {
@@ -64,7 +64,8 @@ io.sockets.on('connection', function(socket) {
 	socket.on('screenshot', function(data) {
 		console.log("Broadcast screenshot");
 		last_screenshot = data;
-		Object.keys(registered_remotes)
+		Object.keys(registered_sockets)
+			.filter(id => registered_sockets[id]['display-screenshots'])
 			.forEach(id => io.sockets.to(id).emit('screenshot', data));
 	});
 });

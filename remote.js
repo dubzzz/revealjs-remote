@@ -1,5 +1,5 @@
 var socket = io.connect(window.location.protocol + '//' + window.location.host);
-socket.emit('register', 'remote');
+socket.emit('register', 'display-screenshots');
 
 var mc = new Hammer(document.body);
 mc.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
