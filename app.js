@@ -26,6 +26,7 @@ app
 	res.sendFile(__dirname + '/listener.js');
 });
 
+var current_presenter = null;
 var last_screenshot = null;
 var registered_sockets = {};
 
@@ -38,7 +39,11 @@ io.sockets.on('connection', function(socket) {
 	
 	// Unregister the socket
 	socket.on('disconnect', function () {
-        console.log("Unregister socket #" + socket.id);
+		console.log("Unregister socket #" + socket.id);
+		if (current_presenter == socket.id) {
+			current_presenter = Object.keys(registered_sockets)
+					.find(id => registered_sockets[id]['presenter']) || null;
+		}
 		delete registered_sockets[socket.id];
 	});
 
@@ -53,6 +58,7 @@ io.sockets.on('connection', function(socket) {
 			case "presenter":
 				console.log("Register '" + type + "' on socket #" + socket.id);
 				registered_sockets[socket.id]['presenter'] = true;
+				current_presenter = socket.id;
 			default:
 				console.log("Unknown registration type for socket #" + socket.id);
 				break;			
@@ -61,14 +67,20 @@ io.sockets.on('connection', function(socket) {
 	
 	// Broadcast commands to all registered sockets
 	socket.on('command', function(command) {
-		console.log("Broadcast command " + command);
-		Object.keys(registered_sockets)
-			.filter(id => registered_sockets[id]['presenter'])
-			.forEach(id => io.sockets.to(id).emit('command', command));
+		if (! current_presenter) {
+			console.log("Send command " + command + ": canceled");
+			return;
+		}
+		console.log("Send command " + command);
+		io.sockets.to(current_presenter).emit('command', command);
 	});
 	
 	// Broadcast commands to all registered remotes
 	socket.on('screenshot', function(data) {
+		if (socket.id != current_presenter) {
+			console.log("Broadcast screenshot: canceled")
+			return;
+		}
 		console.log("Broadcast screenshot");
 		last_screenshot = data;
 		Object.keys(registered_sockets)
