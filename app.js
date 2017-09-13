@@ -26,6 +26,7 @@ app
 	res.sendFile(__dirname + '/listener.js');
 });
 
+var last_screenshot = null;
 var registered_sockets = {};
 var registered_remotes = {};
 
@@ -45,25 +46,27 @@ io.sockets.on('connection', function(socket) {
 		if (type == "remote") {
 			console.log("Register remote on socket #" + socket.id);
 			registered_remotes[socket.id] = true;
+			io.sockets.to(socket.id).emit('screenshot', last_screenshot);
 		}
 		else {
 			console.log("Unknown registration type for socket #" + socket.id);
 		}
 	});
 	
-		// Broadcast commands to all registered sockets
-		socket.on('command', function(command) {
-			console.log("Broadcast command " + command);
-			Object.keys(registered_sockets)
-				.forEach(id => io.sockets.to(id).emit('command', command));
-		});
-		
-		// Broadcast commands to all registered remotes
-		socket.on('screenshot', function(data) {
-			console.log("Broadcast screenshot");
-			Object.keys(registered_remotes)
-				.forEach(id => io.sockets.to(id).emit('screenshot', data));
-		});
+	// Broadcast commands to all registered sockets
+	socket.on('command', function(command) {
+		console.log("Broadcast command " + command);
+		Object.keys(registered_sockets)
+			.forEach(id => io.sockets.to(id).emit('command', command));
+	});
+	
+	// Broadcast commands to all registered remotes
+	socket.on('screenshot', function(data) {
+		console.log("Broadcast screenshot");
+		last_screenshot = data;
+		Object.keys(registered_remotes)
+			.forEach(id => io.sockets.to(id).emit('screenshot', data));
+	});
 });
 
 server.listen(8080);
