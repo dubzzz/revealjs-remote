@@ -37,4 +37,5 @@ Open your presentation as before, it will log onto the app to get the controls s
 
 - arrows: swiping left, right, up or down will emulate arrows on presentation side
 - lazer pointer: long click on the screen
+- live snapshot of the presentation sent to the remote
 
