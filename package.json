@@ -4,7 +4,7 @@
 	"dependencies":
 	{
 		"express": "4.15.2",
-		"socket.io": "2.0.3"
+		"socket.io": "2.0.4"
 	},
 	"author": "Nicolas Dubien <github@dubien.org>",
 	"description": "Simple remote control for RevealJS presentations",
