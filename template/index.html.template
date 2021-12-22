@@ -1,9 +1,9 @@
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-        <script src="/hammer.min.js"></script><!-- https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js -->
-        <script src="/socket.io/socket.io.js"></script>
-        <link rel="stylesheet" href="/remote.css" />
+        <script src="CONTEXT_REVEAL_JS/hammer.min.js"></script><!-- https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js -->
+        <script src="CONTEXT_REVEAL_JS/socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="CONTEXT_REVEAL_JS/remote.css" />
         <style>
         html, body, canvas {
             margin: 0;
@@ -15,5 +15,5 @@
         <button class="btn btn-big" type="button" id="button_prev" style="float: left"><span>&lt;</span></button>
         <button class="btn btn-big" type="button" id="button_next" style="float: right"><span>&gt;</span></button>
     </body>
-    <script src="/remote.js"></script>
+    <script src="CONTEXT_REVEAL_JS/remote.js"></script>
 </html>

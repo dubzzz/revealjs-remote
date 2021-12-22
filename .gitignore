@@ -1,1 +1,6 @@
 node_modules
+
+# Generated files from template
+static/presenter/listener.js
+static/remote/remote.js
+index.html
