@@ -3,7 +3,8 @@ const express = require('express');
 const fs = require('fs');
 const fsPromise = require('fs/promises');
 const concat = require('concat');
-require('dotenv').config()
+
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 var context = process.env.CONTEXT;
 
@@ -15,8 +16,13 @@ function appendConfigIntoFile(appendConfigData, originaleFilePath, destinationFi
 }
 
 const appendConfigData = 'var context = "' + context + '";\r\nvar uriRevealJS = "' + process.env.URI_REVEALJS + '";';
-appendConfigIntoFile(appendConfigData, __dirname + '/remote.js', __dirname + '/static/remote/remote.js');
-appendConfigIntoFile(appendConfigData, __dirname + '/listener.js', __dirname + '/static/presenter/listener.js');
+appendConfigIntoFile(appendConfigData, __dirname + '/template/remote.js', __dirname + '/static/remote/remote.js');
+appendConfigIntoFile(appendConfigData, __dirname + '/template/listener.js', __dirname + '/static/presenter/listener.js');
+
+fs.readFile(__dirname + '/template/index.html.template', { encoding: 'utf8' }, (err, currentFileData) => {
+	const newData = currentFileData.replaceAll("CONTEXT_REVEAL_JS", context);
+	fs.writeFileSync(__dirname + '/index.html', newData, 'utf8');
+});
 
 var app = express();
 var server = require('http').createServer(app);

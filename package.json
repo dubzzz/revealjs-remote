@@ -10,6 +10,7 @@
 	"author": "Nicolas Dubien <github@dubien.org>",
 	"description": "Simple remote control for RevealJS presentations",
 	"scripts": {
-		"start": "node app.js"
+		"start": "node app.js",
+		"start_prod": "NODE_ENV=prod node app.js"
 	}
 }
