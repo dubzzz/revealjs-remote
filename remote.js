@@ -1,3 +1,4 @@
+//var socket = io(window.location.protocol + '//' + window.location.host + context, {path: context+'/socket.io'});
 var socket = io({path: context+'/socket.io'}).connect(window.location.protocol + '//' + window.location.host);
 socket.emit('register', 'display-screenshots');
 

@@ -62,7 +62,7 @@ function play_goto(target) {
     }
 }
 
-var socket = io.connect("http://localhost:8080/"+context);
+var socket = io(uriRevealJS, {path : context + "/socket.io"});
 socket.emit('register', 'presenter');
 socket.on('command', function(raw) {
     console.log("Received command " + raw);
@@ -93,7 +93,7 @@ function send_screenshot() {
             lastScreenshot = screenshot;
             socket.emit('screenshot', screenshot);
         }
-        setTimeout(send_screenshot, 50);
+        setTimeout(send_screenshot, 250);
     });
 }
 send_screenshot();
