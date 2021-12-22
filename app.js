@@ -1,36 +1,54 @@
 #!/usr/bin/nodejs
+const express = require('express');
+const fs = require('fs');
+const concat = require('concat');
 
-var app = require('express')(),
-	server = require('http').createServer(app),
-	io = require('socket.io').listen(server),
-	path = require('path');
+var context = "";
+
+concat([__dirname + '/config.js', __dirname + '/remote.js'], __dirname + '/static/remote/remote.js');
+concat([__dirname + '/config.js', __dirname + '/listener.js'], __dirname + '/static/presenter/listener.js');
+
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server, { 
+	path: context+'/socket.io',
+	cors: {
+		origin: "http://localhost:8008",
+		methods: ["GET", "POST"],
+		credentials: true
+	}
+});
+/*var io = require('socket.io')();
+io.path(context+'/socket.io');
+io.listen(server);*/
 
 // Serve static files
 app
-.get('/', function(req, res) {
+.get(context+'/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 })
-.get('/hammer.min.js', function(req, res) {
-	res.sendFile(__dirname + '/static/remote/hammer.min.js');
+.get(context+'/hammer.min.js', function(req, res) {
+    res.sendFile(__dirname + '/static/remote/hammer.min.js');
 })
-.get('/html2canvas.min.js', function(req, res) {
-	res.sendFile(__dirname + '/static/presenter/html2canvas.min.js');
+.get(context+'/html2canvas.min.js', function(req, res) {
+    res.sendFile(__dirname + '/static/presenter/html2canvas.min.js');
 })
-.get('/remote.js', function(req, res) {
-	res.sendFile(__dirname + '/static/remote/remote.js');
+.get(context+'/remote.js', function(req, res) {
+    res.sendFile(__dirname + '/static/remote/remote.js');
 })
-.get('/remote.css', function(req, res) {
-	res.sendFile(__dirname + '/static/remote/remote.css');
+.get(context+'/remote.css', function(req, res) {
+    res.sendFile(__dirname + '/static/remote/remote.css');
 })
-.get('/listener.js', function(req, res) {
-	res.sendFile(__dirname + '/static/presenter/listener.js');
-});
+.get(context+'/listener.js', function(req, res) {
+    res.sendFile(__dirname + '/static/presenter/listener.js');
+})
+;
 
 var current_presenter = null;
 var last_screenshot = null;
 var registered_sockets = {};
 
-io.sockets.on('connection', function(socket) {
+io.of(context+'/').on('connection', function(socket) {
     console.log("Register socket #" + socket.id);
 	registered_sockets[socket.id] = {
 		'display-screenshots': false,

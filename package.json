@@ -1,15 +1,14 @@
 {
 	"name": "revealjs-remote",
 	"version": "0.1.0",
-	"dependencies":
-	{
-		"express": "4.15.2",
-		"socket.io": "2.0.4"
+	"dependencies": {
+		"concat": "^1.0.3",
+		"express": "4.17.2",
+		"socket.io": "4.4.0"
 	},
 	"author": "Nicolas Dubien <github@dubien.org>",
 	"description": "Simple remote control for RevealJS presentations",
-	"scripts":
-	{
+	"scripts": {
 		"start": "node app.js"
 	}
 }
